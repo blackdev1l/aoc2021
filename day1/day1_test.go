@@ -32,9 +32,9 @@ func TestSumMeasuramentsByThree(t *testing.T) {
 		t.Errorf("should be 618, but is %v\n", result[1])
 	}
 	if result[2] != 618 {
-		t.Errorf("should be 618, but is %v\n", result[1])
+		t.Errorf("should be 618, but is %v\n", result[2])
 	}
 	if result[3] != 617 {
-		t.Errorf("should be 617, but is %v\n", result[1])
+		t.Errorf("should be 617, but is %v\n", result[3])
 	}
 }
