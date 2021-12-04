@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 var example = []string{
 	"00100",
@@ -33,7 +35,7 @@ func TestBinaryToDecimal(t *testing.T) {
 }
 
 func TestFlipBinary(t *testing.T) {
-	res := flipBinary(22)
+	res := flipBinary("10110")
 	if res != 9 {
 		t.Errorf("res is not 9 but is %v\n", res)
 	}
@@ -41,10 +43,26 @@ func TestFlipBinary(t *testing.T) {
 }
 
 func TestResult(t *testing.T) {
-	gamma := binaryToDecimal(getGammaRateToString(example))
+	gamma := getGammaRateToString(example)
 	epsilon := flipBinary(gamma)
-	result := gamma * epsilon
+	result := binaryToDecimal(gamma) * epsilon
 	if result != 198 {
 		t.Errorf("wrong!! res is 198 but yours is %v\n", result)
+	}
+}
+
+func TestOxygenGeneratorRating(t *testing.T) {
+	res := oxygenGeneratorRating(example, 0)
+	val := binaryToDecimal(res)
+	if val != 23 {
+		t.Error("error!!! ")
+	}
+}
+
+func TestCo2Scrubber(t *testing.T) {
+	res := co2Scrubber(example, 0)
+	val := binaryToDecimal(res)
+	if val != 10 {
+		t.Error("error!!! ")
 	}
 }
