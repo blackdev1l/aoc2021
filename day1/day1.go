@@ -1,10 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strconv"
+
+	"github.com/blackdev1l/aoc2021/utils"
 )
 
 func getIncreaseDepth(list []int) int {
@@ -35,31 +34,9 @@ func sumMeasuramentsByThree(list []int) []int {
 	return sumList
 }
 
-func readFIle(str string) []int {
-	file, err := os.Open(str)
-	check(err)
-	defer file.Close()
-
-	var lines []int
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		i, err := strconv.Atoi(scanner.Text())
-		check(err)
-
-		lines = append(lines, i)
-	}
-	return lines
-}
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 func main() {
 
-	lines := readFIle("input.txt")
+	lines := utils.ReadFIleAsIntLines("input.txt")
 	result := getIncreaseDepth(lines)
 	fmt.Printf("First result is %v\n", result)
 

@@ -1,35 +1,15 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
+
+	"github.com/blackdev1l/aoc2021/utils"
 )
 
 type Position struct {
 	horizontal, depth, aim int
-}
-
-func readFIle(str string) []string {
-	file, err := os.Open(str)
-	check(err)
-	defer file.Close()
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		check(err)
-		lines = append(lines, scanner.Text())
-	}
-	return lines
-}
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
 }
 
 func (p *Position) calculate() int {
@@ -41,7 +21,7 @@ func (p *Position) movePart1(list []string) {
 		words := strings.Fields(line)
 		direction := words[0]
 		value, err := strconv.Atoi(words[1])
-		check(err)
+		utils.Check(err)
 
 		switch direction {
 		case "up":
@@ -59,7 +39,7 @@ func (p *Position) movePart2(list []string) {
 		words := strings.Fields(line)
 		direction := words[0]
 		value, err := strconv.Atoi(words[1])
-		check(err)
+		utils.Check(err)
 
 		switch direction {
 		case "up":
@@ -75,7 +55,7 @@ func (p *Position) movePart2(list []string) {
 
 func main() {
 	p := Position{}
-	lines := readFIle("input.txt")
+	lines := utils.ReadFIleAsStringLines("input.txt")
 	p.movePart1(lines)
 	result := p.calculate()
 	fmt.Printf("result of day 2 part 1 is %v\n", result)
