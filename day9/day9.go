@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 
 	"github.com/blackdev1l/aoc2021/utils"
@@ -11,6 +12,10 @@ type Point struct {
 	x, y int
 }
 
+func (point *Point) key() string {
+	return fmt.Sprintf("%v%v", point.y, point.x)
+}
+
 func main() {
 	input := readInput(utils.ReadFIleAsStringLines("input.txt"))
 	points := []Point{}
@@ -18,7 +23,20 @@ func main() {
 	lowestValues := findLowest(input, &points)
 	res := sumLowest(lowestValues)
 
-	fmt.Printf("result is %v\n", res)
+	fmt.Printf("result part 1 is %v\n", res)
+
+	basinList := []int{}
+	for _, point := range points {
+		basin := make(map[string]Point)
+		findBasin(input, point, &basin)
+		basinList = append(basinList, len(basin))
+	}
+	sort.Sort(sort.Reverse(sort.IntSlice(basinList)))
+	result := 1
+	for _, v := range basinList[:3] {
+		result *= v
+	}
+	fmt.Printf("result part 2 is %v\n", result)
 
 }
 
@@ -85,4 +103,56 @@ func sumLowest(lowestList []int) int {
 
 func isLowest(currentValue int, adjacent int) bool {
 	return currentValue < adjacent
+}
+
+func findBasin(input [][]int, point Point, basin *map[string]Point) *map[string]Point {
+	_, isPresent := (*basin)[point.key()]
+	if isPresent {
+		return basin
+	}
+
+	(*basin)[point.key()] = point
+
+	x := point.x
+	y := point.y
+
+	var adj = 0
+	if y != 0 {
+		adj = input[y-1][x]
+		if adj != 9 {
+			new := Point{x: x, y: y - 1}
+			(*basin)[point.key()] = new
+			findBasin(input, new, basin)
+		}
+	}
+
+	if y+1 < len(input) {
+		adj = input[y+1][x]
+		if adj != 9 {
+			new := Point{x: x, y: y + 1}
+			(*basin)[point.key()] = new
+			findBasin(input, new, basin)
+		}
+
+	}
+
+	if x != 0 {
+		adj = input[y][x-1]
+		if adj != 9 {
+			new := Point{x: x - 1, y: y}
+			(*basin)[point.key()] = new
+			findBasin(input, new, basin)
+		}
+	}
+
+	if x+1 < len(input[0]) {
+		adj = input[y][x+1]
+		if adj != 9 {
+			new := Point{x: x + 1, y: y}
+			(*basin)[point.key()] = new
+			findBasin(input, new, basin)
+		}
+	}
+
+	return basin
 }
