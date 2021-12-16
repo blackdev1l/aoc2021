@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/blackdev1l/aoc2021/utils"
@@ -23,28 +24,18 @@ func (s *Stack) pop() string {
 	return val
 }
 
-func parseInput(filename string) []Stack {
-	lines := utils.ReadFIleAsStringLines(filename)
-
-	stacks := []Stack{}
-	for _, line := range lines {
-		stack := Stack{}
-		for _, r := range line {
-			stack.push(string(r))
-		}
-		stacks = append(stacks, stack)
-	}
-
-	return stacks
-}
-
-func checkSyntax(line string) int {
-	stack := Stack{}
+func getMatchingBrackets() map[string]string {
 	var matchingBrackets = make(map[string]string)
 	matchingBrackets["("] = ")"
 	matchingBrackets["["] = "]"
 	matchingBrackets["{"] = "}"
 	matchingBrackets["<"] = ">"
+	return matchingBrackets
+}
+
+func checkSyntax(line string) (int, Stack) {
+	stack := Stack{}
+	matchingBrackets := getMatchingBrackets()
 
 	var points = make(map[string]int)
 	points[")"] = 3
@@ -58,21 +49,56 @@ func checkSyntax(line string) int {
 		} else {
 			last := stack.pop()
 			if matchingBrackets[last] != string(v) {
-				fmt.Printf("Syntax Error expected %v but found %v\n", matchingBrackets[last], string(v))
-				return points[string(v)]
+				//fmt.Printf("Syntax Error expected %v but found %v\n", matchingBrackets[last], string(v))
+				return points[string(v)], Stack{}
 			}
 		}
 	}
 
-	return 0
+	return 0, stack
+}
 
+func completeSyntax(line Stack) int {
+	fmt.Printf("result for syntax %v", line.value)
+	matchingBrackets := getMatchingBrackets()
+
+	var points = make(map[string]int)
+	points[")"] = 1
+	points["]"] = 2
+	points["}"] = 3
+	points[">"] = 4
+
+	var res = 0
+	for len(line.value) != 0 {
+		val := line.pop()
+		res *= 5
+		res += points[matchingBrackets[val]]
+
+	}
+	fmt.Printf("\t\t%v\n", res)
+	return res
+}
+
+func getMiddleResult(scores []int) int {
+	sort.Ints(scores)
+	middle := (len(scores) / 2)
+	return scores[middle]
 }
 
 func main() {
 	lines := utils.ReadFIleAsStringLines("input.txt")
 	var res = 0
+	completedScores := []int{}
 	for _, line := range lines {
-		res += checkSyntax(line)
+		val, stack := checkSyntax(line)
+		res += val
+		if val == 0 {
+			completedScores = append(completedScores, completeSyntax(stack))
+		}
+
 	}
+
 	fmt.Println(res)
+	fmt.Println(getMiddleResult(completedScores))
+
 }
