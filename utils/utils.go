@@ -41,3 +41,19 @@ func Check(e error) {
 		panic(e)
 	}
 }
+
+func MakeMatrix(input []string) [][]int {
+	// var ax = len(input)
+	var result = [][]int{}
+	for _, line := range input {
+		var lineArray = []int{}
+		for _, v := range line {
+			re, err := strconv.Atoi(string(v))
+			Check(err)
+			lineArray = append(lineArray, re)
+		}
+		result = append(result, lineArray)
+	}
+
+	return result
+}

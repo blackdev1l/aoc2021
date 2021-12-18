@@ -10,7 +10,7 @@ import (
 
 func TestParseInput(t *testing.T) {
 	file := utils.ReadFIleAsStringLines("example.txt")
-	res := readInput(file)
+	res := utils.MakeMatrix(file)
 	fmt.Println(res)
 	if res[0][0] != 2 {
 		t.Errorf("error input is %v ", res[0][0])
@@ -18,7 +18,7 @@ func TestParseInput(t *testing.T) {
 }
 
 func TestExample(t *testing.T) {
-	input := readInput(utils.ReadFIleAsStringLines("example.txt"))
+	input := utils.MakeMatrix(utils.ReadFIleAsStringLines("example.txt"))
 	points := []Point{}
 
 	lowestValues := findLowest(input, &points)
@@ -28,7 +28,7 @@ func TestExample(t *testing.T) {
 }
 
 func TestFindBasin(t *testing.T) {
-	input := readInput(utils.ReadFIleAsStringLines("example.txt"))
+	input := utils.MakeMatrix(utils.ReadFIleAsStringLines("example.txt"))
 	point := Point{x: 9, y: 0}
 	basin := make(map[string]Point)
 	findBasin(input, point, &basin)
@@ -36,7 +36,7 @@ func TestFindBasin(t *testing.T) {
 }
 
 func TestPart2(t *testing.T) {
-	input := readInput(utils.ReadFIleAsStringLines("example.txt"))
+	input := utils.MakeMatrix(utils.ReadFIleAsStringLines("example.txt"))
 	points := []Point{}
 	findLowest(input, &points)
 

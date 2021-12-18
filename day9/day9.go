@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"sort"
-	"strconv"
 
 	"github.com/blackdev1l/aoc2021/utils"
 )
@@ -17,7 +16,7 @@ func (point *Point) key() string {
 }
 
 func main() {
-	input := readInput(utils.ReadFIleAsStringLines("input.txt"))
+	input := utils.MakeMatrix(utils.ReadFIleAsStringLines("input.txt"))
 	points := []Point{}
 
 	lowestValues := findLowest(input, &points)
@@ -38,22 +37,6 @@ func main() {
 	}
 	fmt.Printf("result part 2 is %v\n", result)
 
-}
-
-func readInput(input []string) [][]int {
-	// var ax = len(input)
-	var result = [][]int{}
-	for _, line := range input {
-		var lineArray = []int{}
-		for _, v := range line {
-			re, err := strconv.Atoi(string(v))
-			utils.Check(err)
-			lineArray = append(lineArray, re)
-		}
-		result = append(result, lineArray)
-	}
-
-	return result
 }
 
 func findLowest(input [][]int, points *[]Point) []int {
